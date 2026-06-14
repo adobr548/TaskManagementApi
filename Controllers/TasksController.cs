@@ -37,5 +37,19 @@ namespace TaskManagementApi.Controllers
 
             return CreatedAtAction(nameof(GetTask), new { id = task.Id }, task);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTask(int id, TaskItem updatedTask)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+            if (task is null) return NotFound();
+
+            task.Title = updatedTask.Title;
+            task.Description = updatedTask.Description;
+            task.IsCompleted = updatedTask.IsCompleted;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
