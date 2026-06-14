@@ -52,5 +52,17 @@ namespace TaskManagementApi.Controllers
             //204 - No Content
             return NoContent();
         }
+
+        [HttpPatch("{id}/complete")]
+        public async Task<IActionResult> MarkComplete(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+            if (task is null) return NotFound();
+
+            task.IsCompleted = true;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
